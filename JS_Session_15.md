@@ -86,67 +86,60 @@ In this example:
 
 # JavaScript changing this (call, bind, apply).
 
-In JavaScript, you can change the value of the `this` keyword within a function using the `call`, `apply`, and `bind` methods. These methods are used to explicitly set the context (the object to which `this` refers) for a function.
+In JavaScript, you can change the value of the `this` keyword within a function using the `call`, `apply`, and `bind` methods. These methods are used to explicitly set the context (the object to which `this` refers) when calling a function.
 
-1. **Using `call`**:
+1. **Using `call` method:**
 
-The `call` method allows you to invoke a function with a specific value for `this` and a list of arguments.
+The `call` method allows you to call a function with a specific `this` value and any number of arguments passed individually.
 
 ```javascript
 const person = {
-  firstName: "John",
-  lastName: "Doe",
-  greet: function () {
-    console.log(`Hello, ${this.firstName} ${this.lastName}`);
-  },
+  name: "John",
 };
 
-const anotherPerson = {
-  firstName: "Alice",
-  lastName: "Johnson",
-};
-
-person.greet.call(anotherPerson); // Change the context to anotherPerson
-```
-
-In this example, we use `call` to change the `this` context of the `person.greet` function to `anotherPerson`, resulting in the message "Hello, Alice Johnson" being logged.
-
-2. **Using `apply`**:
-
-The `apply` method is similar to `call`, but it takes an array of arguments as the second parameter.
-
-```javascript
-const numbers = [1, 2, 3, 4, 5];
-
-function sum() {
-  return this.reduce((acc, num) => acc + num, 0);
+function greet(message) {
+  console.log(`${message}, ${this.name}!`);
 }
 
-const total = sum.apply(numbers); // Change the context to the 'numbers' array
-console.log(total); // Output: 15
+greet.call(person, "Hello"); // Output: Hello, John!
 ```
 
-In this example, we use `apply` to change the `this` context of the `sum` function to the `numbers` array and calculate the sum of its elements.
+In this example, we use `call` to call the `greet` function with the `person` object as the `this` value.
 
-3. **Using `bind`**:
+2. **Using `apply` method:**
 
-The `bind` method returns a new function with the `this` context permanently set. It doesn't immediately execute the function, so you need to call the new function separately.
+The `apply` method is similar to `call`, but it takes an array of arguments.
 
 ```javascript
-const dog = {
-  name: "Buddy",
-  bark: function () {
-    console.log(`${this.name} says woof!`);
-  },
+const person = {
+  name: "John",
 };
 
-const boundBark = dog.bark.bind(dog); // Create a new function with 'this' set to 'dog'
-boundBark(); // Call the new function
+function greet(message1, message2) {
+  console.log(`${message1} ${message2}, ${this.name}!`);
+}
+
+greet.apply(person, ["Hello", "there"]); // Output: Hello there, John!
 ```
 
-In this example, we use `bind` to create a new function `boundBark` that has the `this` context permanently set to the `dog` object. When we call `boundBark()`, it logs "Buddy says woof!"
+Here, we use `apply` to pass an array of arguments to the `greet` function.
 
-These methods are useful for managing the context of functions in various situations, such as callbacks, event handling, or working with different objects.
+3. **Using `bind` method:**
+
+The `bind` method creates a new function with a specified `this` value and, optionally, preset arguments.
+
+```javascript
+const person = {
+  name: "John",
+};
+
+function greet(message) {
+  console.log(`${message}, ${this.name}!`);
+}
+
+const greetJohn = greet.bind(person);
+greetJohn("Hi"); // Output: Hi, John!
+```
 
 # JavaScript Property Descriptors.
 
